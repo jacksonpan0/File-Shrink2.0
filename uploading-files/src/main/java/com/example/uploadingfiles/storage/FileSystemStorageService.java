@@ -28,6 +28,15 @@ public class FileSystemStorageService implements StorageService {
 
         this.rootLocation = Paths.get(properties.getLocation());
     }
+//    @Override
+//    public void processFile(MultipartFile file) {
+//        String originalFilename = file.getOriginalFilename();
+//        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf('.') + 1).toLowerCase();
+//        // Check if the file format is allowed (e.g., only allow PDF files)
+//        if (!fileExtension.equals("pdf")) {
+//            throw new StorageException("Invalid file format. Only PDF files are allowed.");
+//        }
+//    }
 
     @Override
     public void store(MultipartFile file) {
@@ -35,6 +44,8 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
+            // Process the file before storing
+//            processFile(file);
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
